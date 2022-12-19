@@ -20,5 +20,21 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
+
+		void audioOut(ofSoundBuffer & buffer);
 		
+		
+		ofSoundStream soundStream;
+
+		int		sampleRate;
+		bool 	bNoise;
+		float 	volume;
+
+		vector <float> Audio;
+
+		//------------------- for the simple sine wave synthesis
+		float 	targetFrequency;
+		float 	phase;
+		float 	phaseAdder;
+		float 	phaseAdderTarget;
 };
