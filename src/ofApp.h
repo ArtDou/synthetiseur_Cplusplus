@@ -41,6 +41,7 @@ class ofApp : public ofBaseApp{
 		bool	iskeypressed; 
 		int		n_harm;
 		bool	mode_carre;
+		int 	octave;
 
 		vector <float> sig;
 
