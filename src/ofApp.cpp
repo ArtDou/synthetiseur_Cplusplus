@@ -366,8 +366,11 @@ void ofApp::computeSig(vector <float> & sig){
 
 	for (size_t i = 0; i < sig.size(); i++){
 		phase += phaseAdder;
-		float sample = sin(phase);
-		sig[i] = sample * volume;
+		float sample = 0.0f;
+		for (int k = 1; k < n_harm +1; k++) {
+			sample += sin(k * phase) ;
+		}
+		sig[i] = sample * volume / n_harm;
 	}
 }
 
