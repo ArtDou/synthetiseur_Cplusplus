@@ -36,6 +36,9 @@ class ofApp : public ofBaseApp{
 		bool 	bNoise;
 		float 	volume;
 		int 	bufferSize;
+		int 	freq; 
+		bool	iskeypressed; 
+
 
 		vector <float> Audio;
 		vector <float> sig;

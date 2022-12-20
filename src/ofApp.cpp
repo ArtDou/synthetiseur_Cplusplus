@@ -9,7 +9,6 @@ void ofApp::setup(){
 	bufferSize			= 512;
 	sampleRate 			= 44100;
 	phase 				= 0;
-	frequency 			= 440.0f;
 	phaseAdder 			= 1.0f;
 	phaseAdderTarget 	= 1.0f;
 	volume				= 0.5f;
@@ -52,7 +51,7 @@ void ofApp::draw(){
 	vector <float> fft;
 	ofSetColor(225);
 	ofDrawBitmapString("AUDIO OUTPUT EXAMPLE", 32, 32);
-	ofDrawBitmapString("press 's' to unpause the audio\npress 'e' to pause the audio", 31, 92);
+
 	
 	ofNoFill();
 	
@@ -109,7 +108,7 @@ void ofApp::draw(){
 	ofSetColor(225);
 	string reportString = "volume: ("+ofToString(volume, 2)+") modify with -/+ keys";
 	if( !bNoise ){
-		reportString += "sine wave (" + ofToString(frequency, 2) + "hz) modify with mouse y";
+		reportString += "sine wave (" + ofToString(freq, 2) + "hz) modify with mouse y";
 	}else{
 		reportString += "noise";	
 	}
@@ -120,11 +119,53 @@ void ofApp::draw(){
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
 
+	if (key == '-' || key == '_' ){
+		volume -= 0.05;
+		volume = MAX(volume, 0);
+	} else if (key == '+' || key == '=' ){
+		volume += 0.05;
+		volume = MIN(volume, 1);
+	}
+	
+	if( key == 's' || key == 'd' || key == 'f' || key == 'g' || key == 'h' || key == 'j' || key == 'k' || key == 'l'){
+		iskeypressed = true;
+	
+		if( key == 's' ){
+			freq = 262;
+		}
+		
+		else if( key == 'd' ){
+			freq = 294;
+		}
+		
+		else if( key == 'f' ){
+			freq = 330;
+		}
+
+		else if( key == 'g' ){
+			freq = 349;
+		}
+
+		else if( key == 'h' ){
+			freq = 392;
+		}
+
+		else if( key == 'j' ){
+			freq = 440;
+		}
+
+		else if( key == 'k' ){
+			freq = 494;
+		}
+		else if( key == 'l' ){
+			freq = 523;
+		}
+	} 
 }
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
-
+	iskeypressed = false;
 }
 
 //--------------------------------------------------------------
@@ -164,32 +205,16 @@ void ofApp::windowResized(int w, int h){
 
 //--------------------------------------------------------------
 void ofApp::audioOut(ofSoundBuffer & buffer){
-	computeSig(sig);
-	
-	// float scale = 0.5f;
 
-	// sin (n) seems to have trouble when n is very large, so we
-	// keep phase in the range of 0-TWO_PI like this:
-	// while (phase > TWO_PI){
-	// 	phase -= TWO_PI;
-	// }
-
-	// if (bNoise == true){
-	// 	// ---------------------- noise --------------
-	// 	for (size_t i = 0; i < buffer.getNumFrames(); i++){
-	// 		Audio[i] = buffer[i*buffer.getNumChannels()    ] = ofRandom(0, 1) * volume * scale;
-	// 	}
-	// } else {
-	// 	phaseAdder = 0.95f * phaseAdder + 0.05f * phaseAdderTarget;
-	// 	for (size_t i = 0; i < buffer.getNumFrames(); i++){
-	// 		phase += phaseAdder;
-	// 		float sample = sin(phase);
-	// 		Audio[i] = buffer[i*buffer.getNumChannels()    ] = sample * volume * scale;
-	// 	}
-	// }
+	if ( iskeypressed ){
+		
+		computeSig(sig) ;
+		for (size_t i = 0; i < buffer.getNumFrames(); i++){
+			buffer[i*buffer.getNumChannels()    ] = sig[i];
+		}
+	}
 
 }
-
 //--------------------------------------------------------------
 void ofApp::gotMessage(ofMessage msg){
 
@@ -201,7 +226,7 @@ void ofApp::dragEvent(ofDragInfo dragInfo){
 }
 
 void ofApp::computeSig(vector <float> & sig){
-	phaseAdder = (frequency / (float) sampleRate) * TWO_PI;
+	phaseAdder = (freq / (float) sampleRate) * TWO_PI;
 
 	while (phase > TWO_PI){
 			phase -= TWO_PI;
