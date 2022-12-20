@@ -45,6 +45,7 @@ class ofApp : public ofBaseApp{
 		int 	octave;
 		bool 	mode_dent;
 		string	wave_mode;
+		int 	gap_440;
 
 		vector <float> sig;
 

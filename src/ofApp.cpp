@@ -57,18 +57,35 @@ void ofApp::draw(){
 	const int hauteur_rectangle = 200;
 	const int largeur_rectangle = 900;
 	const int offset_droite = 62;
-	const int offset_haut = 150; //184 -> pour centrer les rectangles par rapport à la fenètre
+	const int offset_haut = 30; //184 -> pour centrer les rectangles par rapport à la fenètre
 	const int all_pick_enven_the_wrong_ones = 2; //1-> pour avoir tous les picks, 2 -> pour limiter à 2*Fmax, 5-> pour s'arreter à 6000Hz
-	ofSetColor(225);
-	ofDrawBitmapString("AUDIO OUTPUT EXAMPLE", 32, 32);
-
+	const int white_tile_width = 40;
+	const int white_tile_height = 150;
+	const int black_tile_width = 30;
+	const int black_tile_height = 100;
+	const int R_fill_color = 245;
+	const int G_fill_color = 58;
+	const int B_fill_color = 135;
 	
+ 	ofSetWindowTitle("Coucou, tu veux voir mon synthetiseur");
+	
+	ofSetColor(225);
+	string reportString = "volume: ("+ofToString(volume, 2)+") modify with -/+ keys";
+	if( !bNoise ){
+		reportString += "sine wave (" + ofToString(freq, 2) + "hz) modify with mouse y";
+	}else{
+		reportString += "noise";	
+	}
+	ofDrawBitmapString(reportString, offset_droite, offset_haut);
+	ofDrawBitmapString("wave mode: " + wave_mode + "\nnumber of harmonic: " + ofToString(n_harm), offset_droite, offset_haut + 20);
+
+
 	ofNoFill();
 	
 	// draw the Original sound Channel:
 	ofPushStyle();
 		ofPushMatrix();
-		ofTranslate(offset_droite, offset_haut, 0);
+		ofTranslate(offset_droite, offset_haut + 50, 0);
 			
 		ofSetColor(225);
 		ofDrawBitmapString("Original sound Channel", 4, 18);
@@ -92,7 +109,7 @@ void ofApp::draw(){
 	// draw the Fourier transform Channel:
 	ofPushStyle();
 		ofPushMatrix();
-		ofTranslate(offset_droite, offset_haut + hauteur_rectangle, 0);
+		ofTranslate(offset_droite, offset_haut + hauteur_rectangle + 50, 0);
 			
 		ofSetColor(225);
 		ofDrawBitmapString("Fourier transform Channel", 4, 18);
@@ -100,7 +117,7 @@ void ofApp::draw(){
 		ofSetLineWidth(1);	
 		ofDrawRectangle(0, 0, largeur_rectangle, hauteur_rectangle);
 
-		ofSetColor(245, 58, 135);
+		ofSetColor(R_fill_color, G_fill_color, B_fill_color);
 		ofSetLineWidth(3);
 					
 			ofBeginShape();
@@ -117,17 +134,137 @@ void ofApp::draw(){
 			
 		ofPopMatrix();
 	ofPopStyle();
+
+	ofPushStyle();
+		ofPushMatrix();
+			ofTranslate((900-280)/2, offset_haut + hauteur_rectangle * 2 + 100, 0);
+
+			// touche blanche
+			ofFill();
+			ofSetColor(255, 255, 255);
+			if (gap_440 == -9%12 & iskeypressed){
+				ofSetColor(R_fill_color, G_fill_color, B_fill_color);
+			}
+			ofDrawRectangle(white_tile_width*0, 0, white_tile_width, white_tile_height);
+			
+			ofFill();
+			ofSetColor(255, 255, 255);
+			if (gap_440 == -7%12 & iskeypressed){
+				ofSetColor(R_fill_color, G_fill_color, B_fill_color);
+			}
+			ofDrawRectangle(white_tile_width*1, 0, white_tile_width, white_tile_height);
+			
+			ofFill();
+			ofSetColor(255, 255, 255);
+			if (gap_440 == -5%12 & iskeypressed){
+				ofSetColor(R_fill_color, G_fill_color, B_fill_color);
+			}
+			ofDrawRectangle(white_tile_width*2, 0, white_tile_width, white_tile_height);
+			
+			ofFill();
+			ofSetColor(255, 255, 255);
+			if (gap_440 == -4%12 & iskeypressed){
+				ofSetColor(R_fill_color, G_fill_color, B_fill_color);
+			}
+			ofDrawRectangle(white_tile_width*3, 0, white_tile_width, white_tile_height);
+			
+			ofFill();
+			ofSetColor(255, 255, 255);
+			if (gap_440 == -2%12 & iskeypressed){
+				ofSetColor(R_fill_color, G_fill_color, B_fill_color);
+			}
+			ofDrawRectangle(white_tile_width*4, 0, white_tile_width, white_tile_height);
+			
+			ofFill();
+			ofSetColor(255, 255, 255);
+			if (gap_440 == 0%12 & iskeypressed){
+				ofSetColor(R_fill_color, G_fill_color, B_fill_color);
+			}
+			ofDrawRectangle(white_tile_width*5, 0, white_tile_width, white_tile_height);
+			
+			ofFill();
+			ofSetColor(255, 255, 255);
+			if (gap_440 == 2%12 & iskeypressed){
+				ofSetColor(R_fill_color, G_fill_color, B_fill_color);
+			}
+			ofDrawRectangle(white_tile_width*6, 0, white_tile_width, white_tile_height);
+
+
+
+			//Contour touches blanches
+			ofNoFill();  
+			ofSetLineWidth(1);	
+			ofSetColor(10, 10, 10);
+			ofDrawRectangle(white_tile_width*0, 0, white_tile_width, white_tile_height);
+			ofDrawRectangle(white_tile_width*1, 0, white_tile_width, white_tile_height);
+			ofDrawRectangle(white_tile_width*2, 0, white_tile_width, white_tile_height);
+			ofDrawRectangle(white_tile_width*3, 0, white_tile_width, white_tile_height);
+			ofDrawRectangle(white_tile_width*4, 0, white_tile_width, white_tile_height);
+			ofDrawRectangle(white_tile_width*5, 0, white_tile_width, white_tile_height);
+			ofDrawRectangle(white_tile_width*6, 0, white_tile_width, white_tile_height);
+
+
+			// touche noire
+			ofFill();
+			ofSetColor(10, 10, 10);
+			if (gap_440 == -8%12 & iskeypressed){
+				ofSetColor(R_fill_color, G_fill_color, B_fill_color);
+			}
+			ofDrawRectangle(white_tile_width*1-black_tile_width/2, 0, black_tile_width, black_tile_height);
+			
+			ofFill();
+			ofSetColor(10, 10, 10);
+			if (gap_440 == -6%12 & iskeypressed){
+				ofSetColor(R_fill_color, G_fill_color, B_fill_color);
+			}
+			ofDrawRectangle(white_tile_width*2-black_tile_width/2, 0, black_tile_width, black_tile_height);
+			
+			ofFill();
+			ofSetColor(10, 10, 10);
+			if (gap_440 == -3%12 & iskeypressed){
+				ofSetColor(R_fill_color, G_fill_color, B_fill_color);
+			}
+			ofDrawRectangle(white_tile_width*4-black_tile_width/2, 0, black_tile_width, black_tile_height);
+			
+			ofFill();
+			ofSetColor(10, 10, 10);
+			if (gap_440 == -1%12 & iskeypressed){
+				ofSetColor(R_fill_color, G_fill_color, B_fill_color);
+			}
+			ofDrawRectangle(white_tile_width*5-black_tile_width/2, 0, black_tile_width, black_tile_height);
+			
+			ofFill();
+			ofSetColor(10, 10, 10);
+			if (gap_440 == 1%12 & iskeypressed){
+				ofSetColor(R_fill_color, G_fill_color, B_fill_color);
+			}
+			ofDrawRectangle(white_tile_width*6-black_tile_width/2, 0, black_tile_width, black_tile_height);
+
+
+			// contour touche noire
+			ofNoFill();  
+			ofSetLineWidth(1);	
+			ofSetColor(10, 10, 10);
+			ofDrawRectangle(white_tile_width*1-black_tile_width/2, 0, black_tile_width, black_tile_height);
+			ofDrawRectangle(white_tile_width*2-black_tile_width/2, 0, black_tile_width, black_tile_height);
+			ofDrawRectangle(white_tile_width*4-black_tile_width/2, 0, black_tile_width, black_tile_height);
+			ofDrawRectangle(white_tile_width*5-black_tile_width/2, 0, black_tile_width, black_tile_height);
+			ofDrawRectangle(white_tile_width*6-black_tile_width/2, 0, black_tile_width, black_tile_height);
+		
+		
+
+
+
+
+
+		
+		
+		ofPopMatrix();
+	ofPopStyle();
+
 	
 		
-	ofSetColor(225);
-	string reportString = "volume: ("+ofToString(volume, 2)+") modify with -/+ keys";
-	if( !bNoise ){
-		reportString += "sine wave (" + ofToString(freq, 2) + "hz) modify with mouse y";
-	}else{
-		reportString += "noise";	
-	}
-	ofDrawBitmapString(reportString, 32, 579);
-	ofDrawBitmapString("wave mode: " + wave_mode + "\nnumber of harmonic: " + ofToString(n_harm), 32, 600);
+
 
 }
 
@@ -135,7 +272,6 @@ void ofApp::draw(){
 void ofApp::keyPressed(int key){
 
 	const float r = 1.05946;
-	int n;
 
 	if (key == '-' || key == '_'){
 		volume -= 0.05;
@@ -159,64 +295,64 @@ void ofApp::keyPressed(int key){
 	//Calul de la différence entre la key et le la3(440Hz)
 	switch(key){
 		case 's':
-			n = -9;
+			gap_440 = -9;
 			iskeypressed = true;
-			freq = 440 * pow(r, n + octave);
+			freq = 440 * pow(r, gap_440 + octave);
 			break;
 		case 'e':
-			n = -8;
+			gap_440 = -8;
 			iskeypressed = true;
-			freq = 440 * pow(r, n + octave);
+			freq = 440 * pow(r, gap_440 + octave);
 			break;
 		case 'd':
-			n = -7;
+			gap_440 = -7;
 			iskeypressed = true;
-			freq = 440 * pow(r, n + octave);
+			freq = 440 * pow(r, gap_440 + octave);
 			break;
 		case 'r':
-			n = -6;
+			gap_440 = -6;
 			iskeypressed = true;
-			freq = 440 * pow(r, n + octave);
+			freq = 440 * pow(r, gap_440 + octave);
 			break;
 		case 'f':
-			n = -5;
+			gap_440 = -5;
 			iskeypressed = true;
-			freq = 440 * pow(r, n + octave);
+			freq = 440 * pow(r, gap_440 + octave);
 			break;
 		case 'g':
-			n = -4;
+			gap_440 = -4;
 			iskeypressed = true;
-			freq = 440 * pow(r, n + octave);
+			freq = 440 * pow(r, gap_440 + octave);
 			break;
 		case 'y':
-			n = -3;
+			gap_440 = -3;
 			iskeypressed = true;
-			freq = 440 * pow(r, n + octave);
+			freq = 440 * pow(r, gap_440 + octave);
 			break;
 		case 'h':
-			n = -2;
+			gap_440 = -2;
 			iskeypressed = true;
-			freq = 440 * pow(r, n + octave);
+			freq = 440 * pow(r, gap_440 + octave);
 			break;
 		case 'u':
-			n = -1;
+			gap_440 = -1;
 			iskeypressed = true;
-			freq = 440 * pow(r, n + octave);
+			freq = 440 * pow(r, gap_440 + octave);
 			break;
 		case 'j':
-			n = 0;
+			gap_440 = 0;
 			iskeypressed = true;
-			freq = 440 * pow(r, n + octave);
+			freq = 440 * pow(r, gap_440 + octave);
 			break;
 		case 'i':
-			n = 1;
+			gap_440 = 1;
 			iskeypressed = true;
-			freq = 440 * pow(r, n + octave);
+			freq = 440 * pow(r, gap_440 + octave);
 			break;
 		case 'k':
-			n = 2;
+			gap_440 = 2;
 			iskeypressed = true;
-			freq = 440 * pow(r, n + octave);
+			freq = 440 * pow(r, gap_440 + octave);
 			break;
 		
 	}
