@@ -1,4 +1,5 @@
 #include "ofApp.h"
+#include <cmath>
 
 
 //--------------------------------------------------------------
@@ -13,6 +14,7 @@ void ofApp::setup(){
 	phaseAdderTarget 	= 1.0f;
 	volume				= 0.5f;
 	n_harm				= 1;
+	octave 				= 0;
 
 
 	sig.assign(bufferSize, 0.0);
@@ -131,6 +133,9 @@ void ofApp::draw(){
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
 
+	const float r = 1.05946;
+	int n;
+
 	if (key == '-' || key == '_'){
 		volume -= 0.05;
 		volume = MAX(volume, 0);
@@ -140,41 +145,80 @@ void ofApp::keyPressed(int key){
 		volume += 0.05;
 		volume = MIN(volume, 1);
 	}
-	
-	if( key == 's' || key == 'd' || key == 'f' || key == 'g' || key == 'h' || key == 'j' || key == 'k' || key == 'l'){
-		iskeypressed = true;
-	
-		if( key == 's' ){
-			freq = 262;
-		}
+
+
+	// Définition de l'octave
+	if (key == OF_KEY_UP){
+		octave += 12;
+	}
+
+	else if (key == OF_KEY_DOWN){
+		octave -= 12;
+	}
+	//Calul de la différence entre la key et le la3(440Hz)
+	switch(key){
+		case 's':
+			n = -9;
+			iskeypressed = true;
+			freq = 440 * pow(r, n + octave);
+			break;
+		case 'e':
+			n = -8;
+			iskeypressed = true;
+			freq = 440 * pow(r, n + octave);
+			break;
+		case 'd':
+			n = -7;
+			iskeypressed = true;
+			freq = 440 * pow(r, n + octave);
+			break;
+		case 'r':
+			n = -6;
+			iskeypressed = true;
+			freq = 440 * pow(r, n + octave);
+			break;
+		case 'f':
+			n = -5;
+			iskeypressed = true;
+			freq = 440 * pow(r, n + octave);
+			break;
+		case 'g':
+			n = -4;
+			iskeypressed = true;
+			freq = 440 * pow(r, n + octave);
+			break;
+		case 'y':
+			n = -3;
+			iskeypressed = true;
+			freq = 440 * pow(r, n + octave);
+			break;
+		case 'h':
+			n = -2;
+			iskeypressed = true;
+			freq = 440 * pow(r, n + octave);
+			break;
+		case 'u':
+			n = -1;
+			iskeypressed = true;
+			freq = 440 * pow(r, n + octave);
+			break;
+		case 'j':
+			n = 0;
+			iskeypressed = true;
+			freq = 440 * pow(r, n + octave);
+			break;
+		case 'i':
+			n = 1;
+			iskeypressed = true;
+			freq = 440 * pow(r, n + octave);
+			break;
+		case 'k':
+			n = 2;
+			iskeypressed = true;
+			freq = 440 * pow(r, n + octave);
+			break;
 		
-		else if( key == 'd' ){
-			freq = 294;
-		}
-		
-		else if( key == 'f' ){
-			freq = 330;
-		}
-
-		else if( key == 'g' ){
-			freq = 349;
-		}
-
-		else if( key == 'h' ){
-			freq = 392;
-		}
-
-		else if( key == 'j' ){
-			freq = 440;
-		}
-
-		else if( key == 'k' ){
-			freq = 494;
-		}
-		else if( key == 'l' ){
-			freq = 523;
-		}
-	} 
+	}
 
 	if ( key == '*' ) {
 		n_harm += 1;
