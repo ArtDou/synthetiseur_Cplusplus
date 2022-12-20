@@ -12,6 +12,8 @@ void ofApp::setup(){
 	phaseAdder 			= 1.0f;
 	phaseAdderTarget 	= 1.0f;
 	volume				= 0.5f;
+	n_harm				= 1;
+
 
 	sig.assign(bufferSize, 0.0);
 	
@@ -173,6 +175,24 @@ void ofApp::keyPressed(int key){
 			freq = 523;
 		}
 	} 
+
+	if ( key == '*' ) {
+		n_harm += 1;
+	}
+
+	if ( key == '/' ) {
+		if (n_harm > 1){
+			n_harm -= 1;}
+	}
+
+	if ( key == '1' ) {
+		mode_carre = true;
+	}
+
+	// reset filters and modes
+	if ( key == '0' ) {
+		mode_carre = false;
+	}
 }
 
 //--------------------------------------------------------------
@@ -220,8 +240,14 @@ void ofApp::audioOut(ofSoundBuffer & buffer){
 
 	if ( iskeypressed ){
 		float scale = 2.0f;
+		
+		if (mode_carre){
+			computeSigCarre(sig) ;
+		}else{
+			computeSig(sig) ;
+		}
 
-		computeSig(sig) ;
+
 		for (size_t i = 0; i < buffer.getNumFrames(); i++){
 			buffer[i*buffer.getNumChannels()    ] = sig[i] * scale;
 		}
@@ -236,6 +262,23 @@ void ofApp::gotMessage(ofMessage msg){
 //--------------------------------------------------------------
 void ofApp::dragEvent(ofDragInfo dragInfo){ 
 
+}
+
+void ofApp::computeSigCarre(vector <float> & sig){
+	phaseAdder = (freq / (float) sampleRate) * TWO_PI;
+
+	while (phase > TWO_PI){
+			phase -= TWO_PI;
+		}
+
+	for (size_t i = 0; i < sig.size(); i++){
+		phase += phaseAdder;
+		float sample = 0.0f;
+		for (int k = 0; k < n_harm +1; k++) {
+			sample += (sin((2*n_harm	+ 1) * TWO_PI * freq * phase)) / (2*n_harm	+ 1);
+		}
+		sig[i] = sample * 4 / PI * volume;
+	}
 }
 
 void ofApp::computeSig(vector <float> & sig){
@@ -313,3 +356,4 @@ vector <float> ofApp::computefft(vector <float> sig){
 	return data;
 
 }
+
