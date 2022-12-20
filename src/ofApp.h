@@ -22,7 +22,7 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 
 		void audioOut(ofSoundBuffer & buffer);
-		
+		void computeSig(vector <float> & sig);
 		
 		ofSoundStream soundStream;
 
@@ -31,6 +31,7 @@ class ofApp : public ofBaseApp{
 		float 	volume;
 
 		vector <float> Audio;
+		vector <float> sig;
 
 		//------------------- for the simple sine wave synthesis
 		float 	targetFrequency;
