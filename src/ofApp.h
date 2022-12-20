@@ -1,6 +1,11 @@
 #pragma once
 
 #include "ofMain.h"
+#include <valarray>
+#include <complex>
+
+typedef std::complex<float> Complex;
+typedef std::valarray<Complex> CArray;
 
 class ofApp : public ofBaseApp{
 
@@ -23,12 +28,14 @@ class ofApp : public ofBaseApp{
 
 		void audioOut(ofSoundBuffer & buffer);
 		void computeSig(vector <float> & sig);
+		vector <float> computefft(vector <float> sig);
 		
 		ofSoundStream soundStream;
 
 		int		sampleRate;
 		bool 	bNoise;
 		float 	volume;
+		int 	bufferSize;
 
 		vector <float> Audio;
 		vector <float> sig;

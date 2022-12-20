@@ -1,11 +1,12 @@
 #include "ofApp.h"
 
+
 //--------------------------------------------------------------
 void ofApp::setup(){
 
 	ofBackground(34, 34, 34);
 	
-	int bufferSize		= 512;
+	bufferSize			= 512;
 	sampleRate 			= 44100;
 	phase 				= 0;
 	frequency 			= 440.0f;
@@ -13,7 +14,6 @@ void ofApp::setup(){
 	phaseAdderTarget 	= 1.0f;
 	volume				= 0.5f;
 
-	Audio.assign(bufferSize, 0.0);
 	sig.assign(bufferSize, 0.0);
 	
 	soundStream.printDeviceList();
@@ -49,6 +49,7 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
 
+	vector <float> fft;
 	ofSetColor(225);
 	ofDrawBitmapString("AUDIO OUTPUT EXAMPLE", 32, 32);
 	ofDrawBitmapString("press 's' to unpause the audio\npress 'e' to pause the audio", 31, 92);
@@ -94,9 +95,10 @@ void ofApp::draw(){
 		ofSetLineWidth(3);
 					
 			ofBeginShape();
-			for (unsigned int i = 0; i < Audio.size(); i++){
-				float x =  ofMap(i, 0, Audio.size(), 0, 900, true);
-				ofVertex(x, 100 -Audio[i]*180.0f);
+			fft = computefft(sig);
+			for (unsigned int i = 0; i < fft.size(); i++){
+				float x =  ofMap(i, 0, fft.size(), 0, 900, true);
+				ofVertex(x, fft[i]);
 			}
 			ofEndShape(false);
 			
@@ -163,6 +165,7 @@ void ofApp::windowResized(int w, int h){
 //--------------------------------------------------------------
 void ofApp::audioOut(ofSoundBuffer & buffer){
 	computeSig(sig);
+	
 	// float scale = 0.5f;
 
 	// sin (n) seems to have trouble when n is very large, so we
@@ -209,4 +212,66 @@ void ofApp::computeSig(vector <float> & sig){
 		float sample = sin(phase);
 		sig[i] = sample * volume;
 	}
+}
+
+vector <float> ofApp::computefft(vector <float> sig){
+
+	CArray x(sig.size());
+	vector <float> data;
+	data.assign(sig.size(), 0);
+
+	for (int k=0; k < sig.size(); k++){
+		x[k] = Complex(sig[k], 0);
+	}
+	
+	
+ 	// DFT
+	unsigned int N = x.size(), k = N, n;
+	double thetaT = 3.14159265358979323846264338328L / N;
+	Complex phiT = Complex(cos(thetaT), -sin(thetaT)), T;
+	while (k > 1)
+	{
+		n = k;
+		k >>= 1;
+		phiT = phiT * phiT;
+		T = 1.0L;
+		for (unsigned int l = 0; l < k; l++)
+		{
+			for (unsigned int a = l; a < N; a += n)
+			{
+				unsigned int b = a + k;
+				Complex t = x[a] - x[b];
+				x[a] += x[b];
+				x[b] = t * T;
+			}
+			T *= phiT;
+		}
+	}
+	// Decimate
+	unsigned int m = (unsigned int)log2(N);
+	for (unsigned int a = 0; a < N; a++)
+	{
+		unsigned int b = a;
+		// Reverse bits
+		b = (((b & 0xaaaaaaaa) >> 1) | ((b & 0x55555555) << 1));
+		b = (((b & 0xcccccccc) >> 2) | ((b & 0x33333333) << 2));
+		b = (((b & 0xf0f0f0f0) >> 4) | ((b & 0x0f0f0f0f) << 4));
+		b = (((b & 0xff00ff00) >> 8) | ((b & 0x00ff00ff) << 8));
+		b = ((b >> 16) | (b << 16)) >> (32 - m);
+		if (b > a)
+		{
+			Complex t = x[a];
+			x[a] = x[b];
+			x[b] = t;
+		}
+	}
+
+	
+    for (int i = 0; i < x.size(); i++){
+		data[i] = abs(x[i]);
+
+    }
+
+	return data;
+
 }
