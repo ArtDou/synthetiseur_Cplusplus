@@ -16,6 +16,7 @@ void ofApp::setup(){
 	n_harm				= 1;
 	octave 				= 0;
 	wave_mode 			= "Sinusoide";
+	noise_percent		= 0.0f;
 
 	sig.assign(bufferSize, 0.0);
 	
@@ -121,11 +122,8 @@ void ofApp::draw(){
 		
 	ofSetColor(225);
 	string reportString = "volume: ("+ofToString(volume, 2)+") modify with -/+ keys";
-	if( !bNoise ){
-		reportString += "sine wave (" + ofToString(freq, 2) + "hz) modify with mouse y";
-	}else{
-		reportString += "noise";	
-	}
+	reportString += "sine wave (" + ofToString(freq, 2) + "hz) modify with mouse y";
+
 	ofDrawBitmapString(reportString, 32, 579);
 	ofDrawBitmapString("wave mode: " + wave_mode + "\nnumber of harmonic: " + ofToString(n_harm), 32, 600);
 
@@ -248,6 +246,26 @@ void ofApp::keyPressed(int key){
 		n_harm = 1;
 		wave_mode = "Sinusoide";
 	}
+
+
+	if (key == 'x'){
+
+		noise_percent = 0.25;
+
+	} else if (key == 'c'){
+
+		noise_percent = 0.50;
+
+	} else if (key == 'v'){
+
+		noise_percent = 1;
+
+	} else if (key == 'w'){
+
+		noise_percent = 0;
+		
+	}
+
 }
 
 //--------------------------------------------------------------
@@ -298,12 +316,15 @@ void ofApp::audioOut(ofSoundBuffer & buffer){
 		
 		if (mode_carre){
 			computeSigCarre(sig) ;
+			addNoise(sig) ;
 		}
 		else if (mode_dent){
 			computeSigDent(sig);
+			addNoise(sig) ;
 		}
 		else{
 			computeSig(sig) ;
+			addNoise(sig) ;
 		}
 
 
@@ -371,6 +392,13 @@ void ofApp::computeSig(vector <float> & sig){
 			sample += sin(k * phase) ;
 		}
 		sig[i] = sample * volume / n_harm;
+	}
+}
+
+void ofApp::addNoise(vector <float> & sig){
+
+	for (int i = 0; i < sig.size(); i++){
+		sig[i] = noise_percent * ofRandom(0, 1) + (1 - noise_percent) * sig[i];
 	}
 }
 
