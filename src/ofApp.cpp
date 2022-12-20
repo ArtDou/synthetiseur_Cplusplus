@@ -15,7 +15,7 @@ void ofApp::setup(){
 	volume				= 0.5f;
 	n_harm				= 1;
 	octave 				= 0;
-
+	wave_mode 			= "Sinusoide";
 
 	sig.assign(bufferSize, 0.0);
 	
@@ -127,6 +127,7 @@ void ofApp::draw(){
 		reportString += "noise";	
 	}
 	ofDrawBitmapString(reportString, 32, 579);
+	ofDrawBitmapString("wave mode: " + wave_mode + "\nnumber of harmonic: " + ofToString(n_harm), 32, 600);
 
 }
 
@@ -229,13 +230,23 @@ void ofApp::keyPressed(int key){
 			n_harm -= 1;}
 	}
 
-	if ( key == '1' ) {
+	if ( key == '2' ) {
+		mode_dent = true;
+		mode_carre = false;
+		wave_mode = "Dent de scie";
+	}
+	else if ( key == '1' ) {
 		mode_carre = true;
+		mode_dent = false;
+		wave_mode = "Carre";
 	}
 
 	// reset filters and modes
 	if ( key == '0' ) {
 		mode_carre = false;
+		mode_dent = false;
+		n_harm = 1;
+		wave_mode = "Sinusoide";
 	}
 }
 
@@ -287,7 +298,11 @@ void ofApp::audioOut(ofSoundBuffer & buffer){
 		
 		if (mode_carre){
 			computeSigCarre(sig) ;
-		}else{
+		}
+		else if (mode_dent){
+			computeSigDent(sig);
+		}
+		else{
 			computeSig(sig) ;
 		}
 
@@ -319,9 +334,26 @@ void ofApp::computeSigCarre(vector <float> & sig){
 		phase += phaseAdder;
 		float sample = 0.0f;
 		for (int k = 0; k < n_harm +1; k++) {
-			sample += (sin((2*n_harm	+ 1) * TWO_PI * freq * phase)) / (2*n_harm	+ 1);
+			sample += (sin((2 * k + 1) * phase)) / (2*k	+ 1);
 		}
 		sig[i] = sample * 4 / PI * volume;
+	}
+}
+
+void ofApp::computeSigDent(vector <float> & sig){
+	phaseAdder = (freq / (float) sampleRate) * TWO_PI;
+
+	while (phase > TWO_PI){
+			phase -= TWO_PI;
+		}
+
+	for (size_t i = 0; i < sig.size(); i++){
+		phase += phaseAdder;
+		float sample = 0.0f;
+		for (int k = 1; k < n_harm +1; k++) {
+			sample += pow((-1),k) * (sin(k * phase)/k);
+		}
+		sig[i] = sample * 2 / PI * volume;
 	}
 }
 
