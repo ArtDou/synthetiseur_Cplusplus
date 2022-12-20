@@ -250,6 +250,13 @@ void ofApp::draw(){
 			ofDrawRectangle(white_tile_width*6-black_tile_width/2, 0, black_tile_width, black_tile_height);
 		
 		
+
+
+
+
+
+		
+		
 		ofPopMatrix();
 	ofPopStyle();
 
