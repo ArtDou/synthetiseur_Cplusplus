@@ -29,6 +29,8 @@ class ofApp : public ofBaseApp{
 		int		sampleRate;
 		bool 	bNoise;
 		float 	volume;
+		int 	freq; 
+		bool	iskeypressed; 
 
 		vector <float> Audio;
 		vector <float> sig;
