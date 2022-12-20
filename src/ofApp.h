@@ -39,8 +39,6 @@ class ofApp : public ofBaseApp{
 		int 	freq; 
 		bool	iskeypressed; 
 
-
-		vector <float> Audio;
 		vector <float> sig;
 
 		//------------------- for the simple sine wave synthesis
