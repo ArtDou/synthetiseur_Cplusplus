@@ -8,12 +8,13 @@ void ofApp::setup(){
 	int bufferSize		= 512;
 	sampleRate 			= 44100;
 	phase 				= 0;
-	phaseAdder 			= 0.0f;
-	phaseAdderTarget 	= 0.0f;
-	volume				= 0.1f;
-	bNoise 				= false;
+	frequency 			= 440.0f;
+	phaseAdder 			= 1.0f;
+	phaseAdderTarget 	= 1.0f;
+	volume				= 0.5f;
 
 	Audio.assign(bufferSize, 0.0);
+	sig.assign(bufferSize, 0.0);
 	
 	soundStream.printDeviceList();
 
@@ -69,9 +70,9 @@ void ofApp::draw(){
 		ofSetLineWidth(3);
 					
 			ofBeginShape();
-			for (unsigned int i = 0; i < Audio.size(); i++){
-				float x =  ofMap(i, 0, Audio.size(), 0, 900, true);
-				ofVertex(x, 100 -Audio[i]*180.0f);
+			for (unsigned int i = 0; i < sig.size(); i++){
+				float x =  ofMap(i, 0, sig.size(), 0, 900, true);
+				ofVertex(x, 100 -sig[i]*180.0f);
 			}
 			ofEndShape(false);
 			
@@ -106,7 +107,7 @@ void ofApp::draw(){
 	ofSetColor(225);
 	string reportString = "volume: ("+ofToString(volume, 2)+") modify with -/+ keys";
 	if( !bNoise ){
-		reportString += "sine wave (" + ofToString(targetFrequency, 2) + "hz) modify with mouse y";
+		reportString += "sine wave (" + ofToString(frequency, 2) + "hz) modify with mouse y";
 	}else{
 		reportString += "noise";	
 	}
@@ -200,6 +201,28 @@ void ofApp::windowResized(int w, int h){
 
 //--------------------------------------------------------------
 void ofApp::audioOut(ofSoundBuffer & buffer){
+	computeSig(sig);
+	// float scale = 0.5f;
+
+	// sin (n) seems to have trouble when n is very large, so we
+	// keep phase in the range of 0-TWO_PI like this:
+	// while (phase > TWO_PI){
+	// 	phase -= TWO_PI;
+	// }
+
+	// if (bNoise == true){
+	// 	// ---------------------- noise --------------
+	// 	for (size_t i = 0; i < buffer.getNumFrames(); i++){
+	// 		Audio[i] = buffer[i*buffer.getNumChannels()    ] = ofRandom(0, 1) * volume * scale;
+	// 	}
+	// } else {
+	// 	phaseAdder = 0.95f * phaseAdder + 0.05f * phaseAdderTarget;
+	// 	for (size_t i = 0; i < buffer.getNumFrames(); i++){
+	// 		phase += phaseAdder;
+	// 		float sample = sin(phase);
+	// 		Audio[i] = buffer[i*buffer.getNumChannels()    ] = sample * volume * scale;
+	// 	}
+	// }
 
 }
 
@@ -211,4 +234,18 @@ void ofApp::gotMessage(ofMessage msg){
 //--------------------------------------------------------------
 void ofApp::dragEvent(ofDragInfo dragInfo){ 
 
+}
+
+void ofApp::computeSig(vector <float> & sig){
+	phaseAdder = (frequency / (float) sampleRate) * TWO_PI;
+
+	while (phase > TWO_PI){
+			phase -= TWO_PI;
+		}
+
+	for (size_t i = 0; i < sig.size(); i++){
+		phase += phaseAdder;
+		float sample = sin(phase);
+		sig[i] = sample * volume;
+	}
 }
