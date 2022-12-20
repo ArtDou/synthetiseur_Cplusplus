@@ -34,7 +34,7 @@ class ofApp : public ofBaseApp{
 		vector <float> sig;
 
 		//------------------- for the simple sine wave synthesis
-		float 	targetFrequency;
+		float 	frequency;
 		float 	phase;
 		float 	phaseAdder;
 		float 	phaseAdderTarget;

@@ -8,7 +8,7 @@ void ofApp::setup(){
 	int bufferSize		= 512;
 	sampleRate 			= 44100;
 	phase 				= 0;
-	targetFrequency 	= 512.0f;
+	frequency 			= 440.0f;
 	phaseAdder 			= 1.0f;
 	phaseAdderTarget 	= 1.0f;
 	volume				= 0.5f;
@@ -107,7 +107,7 @@ void ofApp::draw(){
 	ofSetColor(225);
 	string reportString = "volume: ("+ofToString(volume, 2)+") modify with -/+ keys";
 	if( !bNoise ){
-		reportString += "sine wave (" + ofToString(targetFrequency, 2) + "hz) modify with mouse y";
+		reportString += "sine wave (" + ofToString(frequency, 2) + "hz) modify with mouse y";
 	}else{
 		reportString += "noise";	
 	}
@@ -198,8 +198,7 @@ void ofApp::dragEvent(ofDragInfo dragInfo){
 }
 
 void ofApp::computeSig(vector <float> & sig){
-	phaseAdderTarget = (targetFrequency / (float) sampleRate) * TWO_PI;
-	phaseAdder = 0.95f * phaseAdder + 0.05f * phaseAdderTarget;
+	phaseAdder = (frequency / (float) sampleRate) * TWO_PI;
 
 	while (phase > TWO_PI){
 			phase -= TWO_PI;
