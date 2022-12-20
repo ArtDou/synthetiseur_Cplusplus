@@ -29,6 +29,7 @@ class ofApp : public ofBaseApp{
 		void audioOut(ofSoundBuffer & buffer);
 		void computeSig(vector <float> & sig);
 		void computeSigCarre(vector <float> & sig);
+		void computeSigDent(vector <float> & sig);
 		vector <float> computefft(vector <float> sig);
 		
 		ofSoundStream soundStream;
@@ -42,6 +43,8 @@ class ofApp : public ofBaseApp{
 		int		n_harm;
 		bool	mode_carre;
 		int 	octave;
+		bool 	mode_dent;
+		string	wave_mode;
 
 		vector <float> sig;
 
