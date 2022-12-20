@@ -28,6 +28,7 @@ class ofApp : public ofBaseApp{
 
 		void audioOut(ofSoundBuffer & buffer);
 		void computeSig(vector <float> & sig);
+		void computeSigCarre(vector <float> & sig);
 		vector <float> computefft(vector <float> sig);
 		
 		ofSoundStream soundStream;
@@ -38,6 +39,8 @@ class ofApp : public ofBaseApp{
 		int 	bufferSize;
 		int 	freq; 
 		bool	iskeypressed; 
+		int		n_harm;
+		bool	mode_carre;
 
 		vector <float> sig;
 
