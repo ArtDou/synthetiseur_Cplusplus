@@ -31,11 +31,11 @@ class ofApp : public ofBaseApp{
 		void computeSigCarre(vector <float> & sig);
 		void computeSigDent(vector <float> & sig);
 		vector <float> computefft(vector <float> sig);
+		void addNoise(vector <float> & sig);
 		
 		ofSoundStream soundStream;
 
 		int		sampleRate;
-		bool 	bNoise;
 		float 	volume;
 		int 	bufferSize;
 		int 	freq; 
@@ -45,6 +45,8 @@ class ofApp : public ofBaseApp{
 		int 	octave;
 		bool 	mode_dent;
 		string	wave_mode;
+		int 	gap_440;
+		float	noise_percent;
 
 		vector <float> sig;
 
