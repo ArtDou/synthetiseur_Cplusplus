@@ -116,10 +116,12 @@ void ofApp::draw(){
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
 
-	if (key == '-' || key == '_' ){
+	if (key == '-' || key == '_'){
 		volume -= 0.05;
 		volume = MAX(volume, 0);
-	} else if (key == '+' || key == '=' ){
+	} 
+	
+	else if ((key == '+' || key == '=') & (volume < 0.5f)){
 		volume += 0.05;
 		volume = MIN(volume, 1);
 	}
@@ -204,10 +206,11 @@ void ofApp::windowResized(int w, int h){
 void ofApp::audioOut(ofSoundBuffer & buffer){
 
 	if ( iskeypressed ){
-		
+		float scale = 2.0f;
+
 		computeSig(sig) ;
 		for (size_t i = 0; i < buffer.getNumFrames(); i++){
-			buffer[i*buffer.getNumChannels()    ] = sig[i];
+			buffer[i*buffer.getNumChannels()    ] = sig[i] * scale;
 		}
 	}
 
@@ -224,7 +227,7 @@ void ofApp::dragEvent(ofDragInfo dragInfo){
 
 void ofApp::computeSig(vector <float> & sig){
 	phaseAdder = (freq / (float) sampleRate) * TWO_PI;
-
+    
 	while (phase > TWO_PI){
 			phase -= TWO_PI;
 		}
