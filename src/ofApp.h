@@ -1,6 +1,11 @@
 #pragma once
 
 #include "ofMain.h"
+#include <valarray>
+#include <complex>
+
+typedef std::complex<float> Complex;
+typedef std::valarray<Complex> CArray;
 
 class ofApp : public ofBaseApp{
 
@@ -22,18 +27,29 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 
 		void audioOut(ofSoundBuffer & buffer);
-		
+		void computeSig(vector <float> & sig);
+		void computeSigCarre(vector <float> & sig);
+		void computeSigDent(vector <float> & sig);
+		vector <float> computefft(vector <float> sig);
 		
 		ofSoundStream soundStream;
 
 		int		sampleRate;
 		bool 	bNoise;
 		float 	volume;
+		int 	bufferSize;
+		int 	freq; 
+		bool	iskeypressed; 
+		int		n_harm;
+		bool	mode_carre;
+		int 	octave;
+		bool 	mode_dent;
+		string	wave_mode;
 
-		vector <float> Audio;
+		vector <float> sig;
 
 		//------------------- for the simple sine wave synthesis
-		float 	targetFrequency;
+		float 	frequency;
 		float 	phase;
 		float 	phaseAdder;
 		float 	phaseAdderTarget;
