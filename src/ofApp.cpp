@@ -49,6 +49,12 @@ void ofApp::update(){
 void ofApp::draw(){
 
 	vector <float> fft;
+	vector <float> fft_inv;
+	const int hauteur_rectangle = 200;
+	const int largeur_rectangle = 900;
+	const int offset_droite = 62;
+	const int offset_haut = 150; //184 -> pour centrer les rectangles par rapport à la fenètre
+	const int all_pick_enven_the_wrong_ones = 2; //1-> pour avoir tous les picks, 2 -> pour limiter à 2*Fmax, 5-> pour s'arreter à 6000Hz
 	ofSetColor(225);
 	ofDrawBitmapString("AUDIO OUTPUT EXAMPLE", 32, 32);
 
@@ -58,20 +64,20 @@ void ofApp::draw(){
 	// draw the Original sound Channel:
 	ofPushStyle();
 		ofPushMatrix();
-		ofTranslate(32, 150, 0);
+		ofTranslate(offset_droite, offset_haut, 0);
 			
 		ofSetColor(225);
 		ofDrawBitmapString("Original sound Channel", 4, 18);
 		
 		ofSetLineWidth(1);	
-		ofDrawRectangle(0, 0, 900, 200);
+		ofDrawRectangle(0, 0, largeur_rectangle, hauteur_rectangle);
 
 		ofSetColor(245, 58, 135);
 		ofSetLineWidth(3);
 					
 			ofBeginShape();
 			for (unsigned int i = 0; i < sig.size(); i++){
-				float x =  ofMap(i, 0, sig.size(), 0, 900, true);
+				float x =  ofMap(i, 0, sig.size(), 0, largeur_rectangle, true);
 				ofVertex(x, 100 -sig[i]*180.0f);
 			}
 			ofEndShape(false);
@@ -82,22 +88,26 @@ void ofApp::draw(){
 	// draw the Fourier transform Channel:
 	ofPushStyle();
 		ofPushMatrix();
-		ofTranslate(32, 350, 0);
+		ofTranslate(offset_droite, offset_haut + hauteur_rectangle, 0);
 			
 		ofSetColor(225);
 		ofDrawBitmapString("Fourier transform Channel", 4, 18);
 		
 		ofSetLineWidth(1);	
-		ofDrawRectangle(0, 0, 900, 200);
+		ofDrawRectangle(0, 0, largeur_rectangle, hauteur_rectangle);
 
 		ofSetColor(245, 58, 135);
 		ofSetLineWidth(3);
 					
 			ofBeginShape();
 			fft = computefft(sig);
-			for (unsigned int i = 0; i < fft.size(); i++){
-				float x =  ofMap(i, 0, fft.size(), 0, 900, true);
-				ofVertex(x, fft[i]);
+			fft_inv.assign(fft.size(), 0);
+			for (int j = 0; j < fft.size(); j++){
+				fft_inv[j] = - fft[j];
+			}
+			for (unsigned int i = 0; i < fft_inv.size()/all_pick_enven_the_wrong_ones; i++){
+				float x =  ofMap(i, 0, fft_inv.size()/all_pick_enven_the_wrong_ones, 0, largeur_rectangle, true);
+				ofVertex(x, fft_inv[i]+hauteur_rectangle);
 			}
 			ofEndShape(false);
 			
