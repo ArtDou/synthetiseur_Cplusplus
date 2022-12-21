@@ -49,6 +49,7 @@ class ofApp : public ofBaseApp{
 		string	wave_mode;
 		int 	gap_440;
 		float	noise_percent;
+		string	playing_note;
 
 		vector <float> sig;
 		vector <int> demo;
