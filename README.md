@@ -4,7 +4,7 @@
 - s, d, f, g, h, j, k, e, r, y, u , i pour les notes
 - "=" ou "+" et "-" ou "\_" pour augmenter et diminuer le son
 - w, x, c, v pour choisir la proportion de bruit dans le signal (0, 25, 50 et 100%)
-- 0, 1, 2 pour choisir la forme de signal (sinus, carré, dent de scie)
+- 1, 2, 3 pour choisir la forme de signal (sinus, carré, dent de scie)
 - "\*" et "/" pour rajouter ou enlever une harmonique (i.e., modifier la brillance)
 
 ## Compiler et lancer 
