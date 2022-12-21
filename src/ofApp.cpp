@@ -875,7 +875,7 @@ void ofApp::computeSigCarre(int one_freq, vector <float> & one_sig, vector <floa
 	for (size_t i = 0; i < one_sig.size(); i++){
 		one_phase += phaseAdder;
 		float sample = 0.0f;
-		for (int k = 0; k < n_harm +1; k++) {
+		for (int k = 0; k < n_harm; k++) {
 			sample += (sin((2 * k + 1) * one_phase)) / (2*k	+ 1);
 		}
 		one_sig[i] = sample * 4 / PI * volume;
