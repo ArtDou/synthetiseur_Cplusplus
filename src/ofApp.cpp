@@ -153,7 +153,7 @@ void ofApp::draw(){
 	const int largeur_rectangle = 900;
 	const int offset_droite = 62;
 	const int offset_haut = 10; //184 -> pour centrer les rectangles par rapport à la fenètre
-	const int all_pick_enven_the_wrong_ones = 2; //1-> pour avoir tous les picks, 2 -> pour limiter à 2*Fmax, 5-> pour s'arreter à 6000Hz
+	const int all_pick_enven_the_wrong_ones = 5; //1-> pour avoir tous les picks, 2 -> pour limiter à 2*Fmax, 5-> pour s'arreter à 6000Hz
 	const int white_tile_width = 40;
 	const int white_tile_height = 150;
 	const int black_tile_width = 30;
