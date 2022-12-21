@@ -1,7 +1,6 @@
 #include "ofApp.h"
 #include <cmath>
 
-
 //--------------------------------------------------------------
 void ofApp::setup(){
 
@@ -16,6 +15,99 @@ void ofApp::setup(){
 	n_harm				= 1;
 	octave 				= 0;
 	wave_mode 			= "Sinusoide";
+	n_demo 				= 0;
+
+	// Fur Elise
+	// demo.assign({783,739,783,739,783,587,698,622,523});
+	// Chat-GPT compose
+	demo.assign({
+659, // E
+622, // D#
+659, // E
+622, // D#
+659, // E
+493, // B
+587, // D
+523, // C
+440, // A
+523, // C
+659, // E
+440, // A
+493, // B
+659, // E
+415, // G#
+493, // B
+523, // C
+659, // E
+659, // E
+622, // D#
+659, // E
+622, // D#
+659, // E
+493, // B
+587, // D
+523, // C
+440, // A
+523, // C
+659, // E
+440, // A
+493, // B
+659, // E
+523, // C
+493, // B
+440, // A
+493, // B
+523, // C
+587, // D
+659, // E
+784, // G
+698, // F
+659, // E
+587, // D
+698, // F
+659, // E
+587, // D
+523, // C
+659, // E
+587, // D
+523, // C
+493, // B
+659, // E
+622, // D#
+659, // E
+622, // D#
+659, // E
+493, // B
+587, // D
+523, // C
+440, // A
+523, // C
+659, // E
+440, // A
+493, // B
+659, // E
+415, // G#
+493, // B
+523, // C
+659, // E
+659, // E
+622, // D#
+659, // E
+622, // D#
+659, // E
+493, // B
+587, // D
+523, // C
+440, // A
+523, // C
+659, // E
+440, // A
+493, // B
+659, // E
+523, // C
+493, // B
+440, // A
+});
 	noise_percent		= 0.0f;
 
 	sig.assign(bufferSize, 0.0);
@@ -351,7 +443,15 @@ void ofApp::keyPressed(int key){
 			iskeypressed = true;
 			freq = 440 * pow(r, gap_440 + octave);
 			break;
-		
+			// automate mode
+		case 'n' : 
+			iskeypressed = true;
+			freq = demo[n_demo];
+			cout<<demo[n_demo]<<endl;
+			n_demo += 1;
+			if (n_demo == demo.size())
+				n_demo = 0;
+			break;
 	}
 
 	if ( key == '*' ) {
@@ -598,4 +698,3 @@ vector <float> ofApp::computefft(vector <float> sig){
 	return data;
 
 }
-
