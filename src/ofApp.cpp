@@ -488,6 +488,7 @@ void ofApp::draw(){
 			if (wave_mode == "Dent de scie"){
 				ofSetColor(R_fill_color, G_fill_color, B_fill_color);
 			}
+			ofDrawLine(offset_droite + line_size, 0 + 2*sep, offset_droite + line_size, -line_size + 2*sep);
 			ofDrawLine(offset_droite, 0 + 2*sep, offset_droite + line_size, 0 + 2*sep);
 			ofDrawLine(offset_droite + line_size, -line_size + 2*sep, offset_droite + 2*line_size, 0 + 2*sep);
 			ofDrawLine(offset_droite + 2*line_size, 0 + 2*sep, offset_droite + 3*line_size, 0 + 2*sep);
