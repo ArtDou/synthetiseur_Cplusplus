@@ -378,55 +378,55 @@ void ofApp::draw(){
 			// Case de volume
 			ofFill();
 			ofSetColor(255, 255, 255);
-			if (volume > 0.05){
+			if (volume > 0.06){
 				ofSetColor(R_fill_color, G_fill_color, B_fill_color);
 			}
 			ofDrawRectangle(0, volume_height*10, volume_width, volume_height);
 
 			ofSetColor(255, 255, 255);
-			if (volume > 0.1){
+			if (volume > 0.11){
 				ofSetColor(R_fill_color, G_fill_color, B_fill_color);
 			}
 			ofDrawRectangle(0, volume_height*9, volume_width, volume_height);
 
 			ofSetColor(255, 255, 255);
-			if (volume > 0.15){
+			if (volume > 0.16){
 				ofSetColor(R_fill_color, G_fill_color, B_fill_color);
 			}
 			ofDrawRectangle(0, volume_height*8, volume_width, volume_height);
 
 			ofSetColor(255, 255, 255);
-			if (volume > 0.20){
+			if (volume > 0.21){
 				ofSetColor(R_fill_color, G_fill_color, B_fill_color);
 			}
 			ofDrawRectangle(0, volume_height*7, volume_width, volume_height);
 
 			ofSetColor(255, 255, 255);
-			if (volume > 0.25){
+			if (volume > 0.26){
 				ofSetColor(R_fill_color, G_fill_color, B_fill_color);
 			}
 			ofDrawRectangle(0, volume_height*6, volume_width, volume_height);
 
 			ofSetColor(255, 255, 255);
-			if (volume > 0.30){
+			if (volume > 0.31){
 				ofSetColor(R_fill_color, G_fill_color, B_fill_color);
 			}
 			ofDrawRectangle(0, volume_height*5, volume_width, volume_height);
 
 			ofSetColor(255, 255, 255);
-			if (volume > 0.35){
+			if (volume > 0.36){
 				ofSetColor(R_fill_color, G_fill_color, B_fill_color);
 			}
 			ofDrawRectangle(0, volume_height*4, volume_width, volume_height);
 
 			ofSetColor(255, 255, 255);
-			if (volume > 0.40){
+			if (volume > 0.41){
 				ofSetColor(R_fill_color, G_fill_color, B_fill_color);
 			}
 			ofDrawRectangle(0, volume_height*3, volume_width, volume_height);
 
 			ofSetColor(255, 255, 255);
-			if (volume > 0.45){
+			if (volume > 0.46){
 				ofSetColor(R_fill_color, G_fill_color, B_fill_color);
 			}
 			ofDrawRectangle(0, volume_height*2, volume_width, volume_height);
@@ -676,7 +676,7 @@ void ofApp::keyPressed(int key){
 			break;
 	}
 
-	if ( key == '*' & n_harm < 256) {
+	if ( key == '*' & n_harm < 126) {
 		n_harm += 1;
 	}
 
