@@ -231,49 +231,49 @@ void ofApp::draw(){
 			// touche blanche
 			ofFill();
 			ofSetColor(255, 255, 255);
-			if (gap_440 == -9%12 & iskeypressed){
+			if (notes_played[0]){
 				ofSetColor(R_fill_color, G_fill_color, B_fill_color);
 			}
 			ofDrawRectangle(white_tile_width*0, 0, white_tile_width, white_tile_height);
 			
 			ofFill();
 			ofSetColor(255, 255, 255);
-			if (gap_440 == -7%12 & iskeypressed){
+			if (notes_played[2]){
 				ofSetColor(R_fill_color, G_fill_color, B_fill_color);
 			}
 			ofDrawRectangle(white_tile_width*1, 0, white_tile_width, white_tile_height);
 			
 			ofFill();
 			ofSetColor(255, 255, 255);
-			if (gap_440 == -5%12 & iskeypressed){
+			if (notes_played[4]){
 				ofSetColor(R_fill_color, G_fill_color, B_fill_color);
 			}
 			ofDrawRectangle(white_tile_width*2, 0, white_tile_width, white_tile_height);
 			
 			ofFill();
 			ofSetColor(255, 255, 255);
-			if (gap_440 == -4%12 & iskeypressed){
+			if (notes_played[5]){
 				ofSetColor(R_fill_color, G_fill_color, B_fill_color);
 			}
 			ofDrawRectangle(white_tile_width*3, 0, white_tile_width, white_tile_height);
 			
 			ofFill();
 			ofSetColor(255, 255, 255);
-			if (gap_440 == -2%12 & iskeypressed){
+			if (notes_played[7]){
 				ofSetColor(R_fill_color, G_fill_color, B_fill_color);
 			}
 			ofDrawRectangle(white_tile_width*4, 0, white_tile_width, white_tile_height);
 			
 			ofFill();
 			ofSetColor(255, 255, 255);
-			if (gap_440 == 0%12 & iskeypressed){
+			if (notes_played[9]){
 				ofSetColor(R_fill_color, G_fill_color, B_fill_color);
 			}
 			ofDrawRectangle(white_tile_width*5, 0, white_tile_width, white_tile_height);
 			
 			ofFill();
 			ofSetColor(255, 255, 255);
-			if (gap_440 == 2%12 & iskeypressed){
+			if (notes_played[11]){
 				ofSetColor(R_fill_color, G_fill_color, B_fill_color);
 			}
 			ofDrawRectangle(white_tile_width*6, 0, white_tile_width, white_tile_height);
@@ -296,35 +296,35 @@ void ofApp::draw(){
 			// touche noire
 			ofFill();
 			ofSetColor(10, 10, 10);
-			if (gap_440 == -8%12 & iskeypressed){
+			if (notes_played[1]){
 				ofSetColor(R_fill_color, G_fill_color, B_fill_color);
 			}
 			ofDrawRectangle(white_tile_width*1-black_tile_width/2, 0, black_tile_width, black_tile_height);
 			
 			ofFill();
 			ofSetColor(10, 10, 10);
-			if (gap_440 == -6%12 & iskeypressed){
+			if (notes_played[3]){
 				ofSetColor(R_fill_color, G_fill_color, B_fill_color);
 			}
 			ofDrawRectangle(white_tile_width*2-black_tile_width/2, 0, black_tile_width, black_tile_height);
 			
 			ofFill();
 			ofSetColor(10, 10, 10);
-			if (gap_440 == -3%12 & iskeypressed){
+			if (notes_played[6]){
 				ofSetColor(R_fill_color, G_fill_color, B_fill_color);
 			}
 			ofDrawRectangle(white_tile_width*4-black_tile_width/2, 0, black_tile_width, black_tile_height);
 			
 			ofFill();
 			ofSetColor(10, 10, 10);
-			if (gap_440 == -1%12 & iskeypressed){
+			if (notes_played[8]){
 				ofSetColor(R_fill_color, G_fill_color, B_fill_color);
 			}
 			ofDrawRectangle(white_tile_width*5-black_tile_width/2, 0, black_tile_width, black_tile_height);
 			
 			ofFill();
 			ofSetColor(10, 10, 10);
-			if (gap_440 == 1%12 & iskeypressed){
+			if (notes_played[10]){
 				ofSetColor(R_fill_color, G_fill_color, B_fill_color);
 			}
 			ofDrawRectangle(white_tile_width*6-black_tile_width/2, 0, black_tile_width, black_tile_height);
