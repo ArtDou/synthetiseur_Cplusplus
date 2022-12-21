@@ -149,6 +149,8 @@ void ofApp::draw(){
 
 	vector <float> fft;
 	vector <float> fft_inv;
+	vector <float> ft;
+	vector <float> ft_inv;
 	const int hauteur_rectangle = 200;
 	const int largeur_rectangle = 900;
 	const int offset_droite = 62;
@@ -206,20 +208,40 @@ void ofApp::draw(){
 		ofSetLineWidth(1);	
 		ofDrawRectangle(0, 0, largeur_rectangle, hauteur_rectangle);
 
+		// ofSetColor(R_fill_color, G_fill_color, B_fill_color);
+		// ofSetLineWidth(3);
+					
+		// 	ofBeginShape();
+		// 	fft = computefft(sig);
+		// 	fft_inv.assign(fft.size(), 0);
+		// 	for (int j = 0; j < fft.size(); j++){
+		// 		fft_inv[j] = - fft[j];
+		// 	}
+		// 	for (unsigned int i = 0; i < fft_inv.size()/all_pick_enven_the_wrong_ones; i++){
+		// 		float x =  ofMap(i, 0, fft_inv.size()/all_pick_enven_the_wrong_ones, 0, largeur_rectangle, true);
+		// 		ofVertex(x, fft_inv[i]+hauteur_rectangle);
+		// 	}
+		// 	ofEndShape(false);
+
+		int ft_offset = 0;
 		ofSetColor(R_fill_color, G_fill_color, B_fill_color);
 		ofSetLineWidth(3);
 					
 			ofBeginShape();
-			fft = computefft(sig);
-			fft_inv.assign(fft.size(), 0);
-			for (int j = 0; j < fft.size(); j++){
-				fft_inv[j] = - fft[j];
+			ft = computeFT(sig);
+			ft_inv.assign(ft.size(), 0);
+			for (int j = 0; j < ft.size(); j++){
+				ft_inv[j] = - ft[j] - ft_offset ;
 			}
-			for (unsigned int i = 0; i < fft_inv.size()/all_pick_enven_the_wrong_ones; i++){
-				float x =  ofMap(i, 0, fft_inv.size()/all_pick_enven_the_wrong_ones, 0, largeur_rectangle, true);
-				ofVertex(x, fft_inv[i]+hauteur_rectangle);
+			for (unsigned int i = 0; i < ft_inv.size(); i++){
+				float x =  ofMap(i, 0, ft_inv.size(), 0, largeur_rectangle, true);
+				ofVertex(x, ft_inv[i]+hauteur_rectangle);
 			}
 			ofEndShape(false);
+
+		// ofDrawBitmapString(ofToString(ft),0, 0);
+		// ofDrawBitmapString(ofToString(fft),0, 10);
+		// ofDrawBitmapString(ofToString(sig),0, 20);
 			
 		ofPopMatrix();
 	ofPopStyle();
@@ -915,18 +937,19 @@ vector <float> ofApp::computefft(vector <float> sig){
 
 }
 
+
 vector <float> ofApp::computeFT(vector <float> sig){
 
-	using namespace std;
-
 	vector <float> ft;
-	float dt = 1/sampleRate;
-	int myfreq
+	ft.assign(sig.size(), 0.0f);
 
-	std::complex<float> i;
-	std::complex<float> res;
+	float dt = 1/float(sampleRate);
+	float myfreq ; 
 
-	i = {0,1}
+	complex<float> i;
+	complex<float> res;
+
+	i = {0,1};
 
 	for (int f=0; f < sig.size(); f++){
 		res = {0, 0};
@@ -935,18 +958,14 @@ vector <float> ofApp::computeFT(vector <float> sig){
 
 		for (int j=0; j < sig.size(); j++){
 
-			res += sig[j] * exp(-1 *TWO_PI * i * myfreq * j * dt);
+			res += sig[j] * exp(-3.141592f * i * myfreq * float(j) * dt);
 
 		}
-		res *= dt;
-		ft[f] = abs(res);
+		res *= dt/dt;
+		ft[f] = sqrt(pow(real(res),2) + pow(imag(res),2));
 
 	}
 
 	return ft;
-
-
-
-
 
 }
