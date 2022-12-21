@@ -31,6 +31,7 @@ class ofApp : public ofBaseApp{
 		void computeSigCarre(int one_freq, vector <float> & one_sig, vector <float> & notes_phase, int n);
 		void computeSigDent(int one_freq, vector <float> & sig, vector <float> & notes_phase, int n);
 		vector <float> computefft(vector <float> sig);
+		vector <float> computeFT(vector <float> sig);
 		void addNoise(vector <float> & sig);
 		
 
