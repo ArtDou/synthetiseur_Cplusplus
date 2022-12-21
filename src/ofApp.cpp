@@ -224,7 +224,9 @@ void ofApp::draw(){
 		// 	}
 		// 	ofEndShape(false);
 
-		int ft_offset = 0;
+		int ft_offset = 0; // y offset if you want to show multiple line
+		float ft_scaler = float(sampleRate); // Rescale output to be visible in graphique (else all < 10^-4)
+
 		ofSetColor(R_fill_color, G_fill_color, B_fill_color);
 		ofSetLineWidth(3);
 					
@@ -236,7 +238,7 @@ void ofApp::draw(){
 			}
 			for (unsigned int i = 0; i < ft_inv.size(); i++){
 				float x =  ofMap(i, 0, ft_inv.size(), 0, largeur_rectangle, true);
-				ofVertex(x, ft_inv[i]+hauteur_rectangle);
+				ofVertex(x, ft_inv[i]*ft_scaler+hauteur_rectangle);
 			}
 			ofEndShape(false);
 
@@ -1037,7 +1039,7 @@ vector <float> ofApp::computeFT(vector <float> sig){
 			res += sig[j] * exp(-3.141592f * i * myfreq * float(j) * dt);
 
 		}
-		res *= dt/dt;
+		res *= dt;
 		ft[f] = sqrt(pow(real(res),2) + pow(imag(res),2));
 
 	}
