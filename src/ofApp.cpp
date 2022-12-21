@@ -1,5 +1,6 @@
 #include "ofApp.h"
 #include <cmath>
+#include <complex> 
 
 //--------------------------------------------------------------
 void ofApp::setup(){
@@ -911,5 +912,41 @@ vector <float> ofApp::computefft(vector <float> sig){
     }
 
 	return data;
+
+}
+
+vector <float> ofApp::computeFT(vector <float> sig){
+
+	using namespace std;
+
+	vector <float> ft;
+	float dt = 1/sampleRate;
+	int myfreq
+
+	std::complex<float> i;
+	std::complex<float> res;
+
+	i = {0,1}
+
+	for (int f=0; f < sig.size(); f++){
+		res = {0, 0};
+
+		myfreq = f * sampleRate / (2 *  sig.size());
+
+		for (int j=0; j < sig.size(); j++){
+
+			res += sig[j] * exp(-1 *TWO_PI * i * myfreq * j * dt);
+
+		}
+		res *= dt;
+		ft[f] = abs(res);
+
+	}
+
+	return ft;
+
+
+
+
 
 }
