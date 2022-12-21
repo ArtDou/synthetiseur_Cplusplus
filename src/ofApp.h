@@ -31,11 +31,12 @@ class ofApp : public ofBaseApp{
 		void computeSigCarre(vector <float> & sig);
 		void computeSigDent(vector <float> & sig);
 		vector <float> computefft(vector <float> sig);
+		void addNoise(vector <float> & sig);
 		
+
 		ofSoundStream soundStream;
 
 		int		sampleRate;
-		bool 	bNoise;
 		float 	volume;
 		int 	bufferSize;
 		int 	freq; 
@@ -44,9 +45,14 @@ class ofApp : public ofBaseApp{
 		bool	mode_carre;
 		int 	octave;
 		bool 	mode_dent;
+		int 	n_demo;
 		string	wave_mode;
+		int 	gap_440;
+		float	noise_percent;
+		string	playing_note;
 
 		vector <float> sig;
+		vector <int> demo;
 
 		//------------------- for the simple sine wave synthesis
 		float 	frequency;

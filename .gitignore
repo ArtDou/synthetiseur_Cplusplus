@@ -33,3 +33,5 @@ bin/
 *.app
 
 config.make
+bin/synthetiseur_Cplusplus
+obj/linux64/Release/.compiler_flags
