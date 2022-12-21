@@ -665,7 +665,7 @@ void ofApp::keyPressed(int key){
 			break;
 	}
 
-	if ( key == '*' ) {
+	if ( key == '*' & n_harm < 256) {
 		n_harm += 1;
 	}
 
