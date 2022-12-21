@@ -27,9 +27,9 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 
 		void audioOut(ofSoundBuffer & buffer);
-		void computeSig(vector <float> & sig);
-		void computeSigCarre(vector <float> & sig);
-		void computeSigDent(vector <float> & sig);
+		void computeSig(int one_freq, vector <float> & sig, vector <float> & notes_phase, int n);
+		void computeSigCarre(int one_freq, vector <float> & one_sig, vector <float> & notes_phase, int n);
+		void computeSigDent(int one_freq, vector <float> & sig, vector <float> & notes_phase, int n);
 		vector <float> computefft(vector <float> sig);
 		void addNoise(vector <float> & sig);
 		
@@ -53,6 +53,9 @@ class ofApp : public ofBaseApp{
 
 		vector <float> sig;
 		vector <int> demo;
+		vector <bool> notes_played;
+		vector <int> gap_vec;
+		vector <float> notes_phase;
 
 		//------------------- for the simple sine wave synthesis
 		float 	frequency;

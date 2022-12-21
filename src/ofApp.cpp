@@ -1,6 +1,7 @@
 #include "ofApp.h"
 #include <cmath>
 
+const float r = 1.05946;
 //--------------------------------------------------------------
 void ofApp::setup(){
 
@@ -16,103 +17,103 @@ void ofApp::setup(){
 	octave 				= 0;
 	wave_mode 			= "Sinusoide";
 	n_demo 				= 0;
+	noise_percent		= 0.0f;
 
 	// Fur Elise
 	// demo.assign({783,739,783,739,783,587,698,622,523});
 	// Chat-GPT compose
 	demo.assign({
-659, // E
-622, // D#
-659, // E
-622, // D#
-659, // E
-493, // B
-587, // D
-523, // C
-440, // A
-523, // C
-659, // E
-440, // A
-493, // B
-659, // E
-415, // G#
-493, // B
-523, // C
-659, // E
-659, // E
-622, // D#
-659, // E
-622, // D#
-659, // E
-493, // B
-587, // D
-523, // C
-440, // A
-523, // C
-659, // E
-440, // A
-493, // B
-659, // E
-523, // C
-493, // B
-440, // A
-493, // B
-523, // C
-587, // D
-659, // E
-784, // G
-698, // F
-659, // E
-587, // D
-698, // F
-659, // E
-587, // D
-523, // C
-659, // E
-587, // D
-523, // C
-493, // B
-659, // E
-622, // D#
-659, // E
-622, // D#
-659, // E
-493, // B
-587, // D
-523, // C
-440, // A
-523, // C
-659, // E
-440, // A
-493, // B
-659, // E
-415, // G#
-493, // B
-523, // C
-659, // E
-659, // E
-622, // D#
-659, // E
-622, // D#
-659, // E
-493, // B
-587, // D
-523, // C
-440, // A
-523, // C
-659, // E
-440, // A
-493, // B
-659, // E
-523, // C
-493, // B
-440, // A
-});
-	noise_percent		= 0.0f;
-	playing_note 		= "";
-
+		659, // E
+		622, // D#
+		659, // E
+		622, // D#
+		659, // E
+		493, // B
+		587, // D
+		523, // C
+		440, // A
+		523, // C
+		659, // E
+		440, // A
+		493, // B
+		659, // E
+		415, // G#
+		493, // B
+		523, // C
+		659, // E
+		659, // E
+		622, // D#
+		659, // E
+		622, // D#
+		659, // E
+		493, // B
+		587, // D
+		523, // C
+		440, // A
+		523, // C
+		659, // E
+		440, // A
+		493, // B
+		659, // E
+		523, // C
+		493, // B
+		440, // A
+		493, // B
+		523, // C
+		587, // D
+		659, // E
+		784, // G
+		698, // F
+		659, // E
+		587, // D
+		698, // F
+		659, // E
+		587, // D
+		523, // C
+		659, // E
+		587, // D
+		523, // C
+		493, // B
+		659, // E
+		622, // D#
+		659, // E
+		622, // D#
+		659, // E
+		493, // B
+		587, // D
+		523, // C
+		440, // A
+		523, // C
+		659, // E
+		440, // A
+		493, // B
+		659, // E
+		415, // G#
+		493, // B
+		523, // C
+		659, // E
+		659, // E
+		622, // D#
+		659, // E
+		622, // D#
+		659, // E
+		493, // B
+		587, // D
+		523, // C
+		440, // A
+		523, // C
+		659, // E
+		440, // A
+		493, // B
+		659, // E
+		523, // C
+		493, // B
+		440 // A
+	});
+	notes_played.assign(12, false);
+	gap_vec.assign({-9,-8,-7,-6,-5,-4,-3,-2,-1,0,1,2});
 	sig.assign(bufferSize, 0.0);
-	
+	notes_phase.assign(12, 0.0);
 	soundStream.printDeviceList();
 
 	ofSoundStreamSettings settings;
@@ -559,8 +560,6 @@ void ofApp::draw(){
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
 
-	const float r = 1.05946;
-
 	if (key == '-' || key == '_'){
 		volume -= 0.05;
 		volume = MAX(volume, 0);
@@ -587,78 +586,90 @@ void ofApp::keyPressed(int key){
 			iskeypressed = true;
 			freq = 440 * pow(r, gap_440 + octave);
 			playing_note = "Do";
+			notes_played[0]=true;
 			break;
 		case 'e':
 			gap_440 = -8;
 			iskeypressed = true;
 			freq = 440 * pow(r, gap_440 + octave);
 			playing_note = "Do#";
+			notes_played[1]=true;
 			break;
 		case 'd':
 			gap_440 = -7;
 			iskeypressed = true;
 			freq = 440 * pow(r, gap_440 + octave);
 			playing_note = "Re";
+			notes_played[2]=true;
 			break;
 		case 'r':
 			gap_440 = -6;
 			iskeypressed = true;
 			freq = 440 * pow(r, gap_440 + octave);
 			playing_note = "Re#";
+			notes_played[3]=true;
 			break;
 		case 'f':
 			gap_440 = -5;
 			iskeypressed = true;
 			freq = 440 * pow(r, gap_440 + octave);
 			playing_note = "Mi";
+			notes_played[4]=true;
 			break;
 		case 'g':
 			gap_440 = -4;
 			iskeypressed = true;
 			freq = 440 * pow(r, gap_440 + octave);
 			playing_note = "Fa";
+			notes_played[5]=true;
 			break;
 		case 'y':
 			gap_440 = -3;
 			iskeypressed = true;
 			freq = 440 * pow(r, gap_440 + octave);
 			playing_note = "Fa#";
+			notes_played[6]=true;
 			break;
 		case 'h':
 			gap_440 = -2;
 			iskeypressed = true;
 			freq = 440 * pow(r, gap_440 + octave);
 			playing_note = "Sol";
+			notes_played[7]=true;
 			break;
 		case 'u':
 			gap_440 = -1;
 			iskeypressed = true;
 			freq = 440 * pow(r, gap_440 + octave);
 			playing_note = "Sol#";
+			notes_played[8]=true;
 			break;
 		case 'j':
 			gap_440 = 0;
 			iskeypressed = true;
 			freq = 440 * pow(r, gap_440 + octave);
 			playing_note = "La";
+			notes_played[9]=true;
 			break;
 		case 'i':
 			gap_440 = 1;
 			iskeypressed = true;
 			freq = 440 * pow(r, gap_440 + octave);
 			playing_note = "La#";
+			notes_played[10]=true;
 			break;
 		case 'k':
 			gap_440 = 2;
 			iskeypressed = true;
 			freq = 440 * pow(r, gap_440 + octave);
 			playing_note = "Si";
+			notes_played[11]=true;
 			break;
 			// automate mode
 		case 'n' : 
 			iskeypressed = true;
 			freq = demo[n_demo];
-			cout<<demo[n_demo]<<endl;
+			// cout<<demo[n_demo]<<endl;
 			n_demo += 1;
 			if (n_demo == demo.size())
 				n_demo = 0;
@@ -720,7 +731,48 @@ void ofApp::keyPressed(int key){
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
-	iskeypressed = false;
+	switch(key){
+		case 's':
+			notes_played[0]=false;
+			break;
+		case 'e':
+			notes_played[1]=false;
+			break;
+		case 'd':
+			notes_played[2]=false;
+			break;
+		case 'r':
+			notes_played[3]=false;
+			break;
+		case 'f':
+			notes_played[4]=false;
+			break;
+		case 'g':
+			notes_played[5]=false;
+			break;
+		case 'y':
+			notes_played[6]=false;
+			break;
+		case 'h':
+			notes_played[7]=false;
+			break;
+		case 'u':
+			notes_played[8]=false;
+			break;
+		case 'j':
+			notes_played[9]=false;
+			break;
+		case 'i':
+			notes_played[10]=false;
+			break;
+		case 'k':
+			notes_played[11]=false;
+			break;
+			// automate mode
+		case 'n' : 
+			iskeypressed = false;
+			break;
+	}
 }
 
 //--------------------------------------------------------------
@@ -760,27 +812,45 @@ void ofApp::windowResized(int w, int h){
 
 //--------------------------------------------------------------
 void ofApp::audioOut(ofSoundBuffer & buffer){
+	float scale = 2.0f;
+	vector <float> one_sig;
+	int freq_note;
+	sig.assign(bufferSize, 0.0);
+	float n_note = 1.0;
 
-	if ( iskeypressed ){
-		float scale = 2.0f;
-		
-		if (mode_carre){
-			computeSigCarre(sig) ;
-			addNoise(sig) ;
-		}
-		else if (mode_dent){
-			computeSigDent(sig);
-			addNoise(sig) ;
-		}
-		else{
-			computeSig(sig) ;
-			addNoise(sig) ;
-		}
+	for (int n = 0; n < notes_played.size(); n++){
+		if (notes_played[n]){
+			n_note += 1.0;
+			one_sig.assign(bufferSize, 0.0);
+			freq_note = 440 * pow(r, gap_vec[n] + octave);
 
-
-		for (size_t i = 0; i < buffer.getNumFrames(); i++){
-			buffer[i*buffer.getNumChannels()    ] = sig[i] * scale;
+				if (mode_carre){
+					computeSigCarre(freq_note, one_sig, notes_phase, n) ;
+					addNoise(one_sig) ;
+				}
+				else if (mode_dent){
+					computeSigDent(freq_note, one_sig, notes_phase, n);
+					addNoise(one_sig) ;
+				}
+				else{
+					computeSig(freq_note, one_sig, notes_phase, n) ;
+					addNoise(one_sig) ;
+				}
+			for (int j = 0; j < one_sig.size(); j++) {
+				sig[j] += one_sig[j];
+			}
 		}
+	}
+	// Normalize
+	if (n_note > 1.0) n_note -= 1.0;
+	for (int j = 0; j < one_sig.size(); j++) {
+		sig[j] += one_sig[j] / n_note;
+	}
+	// for (int a=0;a<notes_phase.size();a++)
+	// 	cout<<notes_phase[a]<<" ";
+	// cout<<endl;
+	for (size_t i = 0; i < buffer.getNumFrames(); i++){
+		buffer[i*buffer.getNumChannels()    ] = sig[i] * scale;
 	}
 
 }
@@ -794,55 +864,61 @@ void ofApp::dragEvent(ofDragInfo dragInfo){
 
 }
 
-void ofApp::computeSigCarre(vector <float> & sig){
-	phaseAdder = (freq / (float) sampleRate) * TWO_PI;
+void ofApp::computeSigCarre(int one_freq, vector <float> & one_sig, vector <float> & notes_phase, int n){
+	phaseAdder = (one_freq / (float) sampleRate) * TWO_PI;
+	float one_phase = notes_phase[n];
 
-	while (phase > TWO_PI){
-			phase -= TWO_PI;
-		}
-
-	for (size_t i = 0; i < sig.size(); i++){
-		phase += phaseAdder;
-		float sample = 0.0f;
-		for (int k = 0; k < n_harm ; k++) {
-			sample += (sin((2 * k + 1) * phase)) / (2*k	+ 1);
-		}
-		sig[i] = sample * 4 / PI * volume;
+	while (one_phase > TWO_PI){
+			one_phase -= TWO_PI;
 	}
+
+	for (size_t i = 0; i < one_sig.size(); i++){
+		one_phase += phaseAdder;
+		float sample = 0.0f;
+		for (int k = 0; k < n_harm +1; k++) {
+			sample += (sin((2 * k + 1) * one_phase)) / (2*k	+ 1);
+		}
+		one_sig[i] = sample * 4 / PI * volume;
+	}
+	notes_phase[n] = one_phase;
 }
 
-void ofApp::computeSigDent(vector <float> & sig){
-	phaseAdder = (freq / (float) sampleRate) * TWO_PI;
+void ofApp::computeSigDent(int one_freq, vector <float> & one_sig, vector <float> & notes_phase, int n){
+	phaseAdder = (one_freq / (float) sampleRate) * TWO_PI;
+	float one_phase = notes_phase[n];
 
-	while (phase > TWO_PI){
-			phase -= TWO_PI;
-		}
+	while (one_phase > TWO_PI){
+			one_phase -= TWO_PI;
+	}
 
-	for (size_t i = 0; i < sig.size(); i++){
-		phase += phaseAdder;
+	for (size_t i = 0; i < one_sig.size(); i++){
+		one_phase += phaseAdder;
 		float sample = 0.0f;
 		for (int k = 1; k < n_harm +1; k++) {
-			sample += pow((-1),k) * (sin(k * phase)/k);
+			sample += pow((-1),k) * (sin(k * one_phase)/k);
 		}
-		sig[i] = sample * 2 / PI * volume;
+		one_sig[i] = sample * 2 / PI * volume;
 	}
+	notes_phase[n] = one_phase;
 }
 
-void ofApp::computeSig(vector <float> & sig){
-	phaseAdder = (freq / (float) sampleRate) * TWO_PI;
-    
-	while (phase > TWO_PI){
-			phase -= TWO_PI;
-		}
+void ofApp::computeSig(int one_freq, vector <float> & one_sig, vector <float> & notes_phase, int n){
+	phaseAdder = (one_freq / (float) sampleRate) * TWO_PI;
+    float one_phase = notes_phase[n];
 
-	for (size_t i = 0; i < sig.size(); i++){
-		phase += phaseAdder;
+	while (one_phase > TWO_PI){
+			one_phase -= TWO_PI;
+	}
+
+	for (size_t i = 0; i < one_sig.size(); i++){
+		one_phase += phaseAdder;
 		float sample = 0.0f;
 		for (int k = 1; k < n_harm +1; k++) {
-			sample += sin(k * phase) ;
+			sample += sin(k * one_phase) ;
 		}
-		sig[i] = sample * volume / n_harm;
+		one_sig[i] = sample * volume / n_harm;
 	}
+	notes_phase[n] = one_phase;
 }
 
 void ofApp::addNoise(vector <float> & sig){
