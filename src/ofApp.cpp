@@ -151,7 +151,7 @@ void ofApp::draw(){
 	const int hauteur_rectangle = 200;
 	const int largeur_rectangle = 900;
 	const int offset_droite = 62;
-	const int offset_haut = 30; //184 -> pour centrer les rectangles par rapport à la fenètre
+	const int offset_haut = 10; //184 -> pour centrer les rectangles par rapport à la fenètre
 	const int all_pick_enven_the_wrong_ones = 2; //1-> pour avoir tous les picks, 2 -> pour limiter à 2*Fmax, 5-> pour s'arreter à 6000Hz
 	const int white_tile_width = 40;
 	const int white_tile_height = 150;
@@ -161,9 +161,10 @@ void ofApp::draw(){
 	const int G_fill_color = 58;
 	const int B_fill_color = 135;
 	const int volume_width = 40;
-	const int volume_height = 15;
+	const int volume_height = 16;
 	const int line_size = 30;
 	const int sep = 60;
+	const int noise_height = 36;
  	ofSetWindowTitle("Coucou, tu veux voir mon synthetiseur");
 	
 	ofSetColor(225);
@@ -372,7 +373,7 @@ void ofApp::draw(){
 	ofPushStyle();
 		ofPushMatrix();
 			ofTranslate(900, offset_haut + hauteur_rectangle * 2 + 100, 0);
-			
+			ofDrawBitmapString("Volume", volume_width/2 - 20, 0);
 			// Case de volume
 			ofFill();
 			ofSetColor(255, 255, 255);
@@ -495,13 +496,63 @@ void ofApp::draw(){
 
 			// Harmonique
 			ofSetColor(255);
-			ofDrawBitmapString("Nunber of harmonic = " + ofToString(n_harm) + "\nincrease: *\ndecrease: /", offset_droite, 2* sep + 35);
+			ofDrawBitmapString("Nunber of harmonic = " + ofToString(n_harm - 1) + "\nincrease: *\ndecrease: /\nreset: 0", offset_droite, 2* sep + 35);
 
 		ofPopMatrix();
 	ofPopStyle();
 
-	
+	ofPushStyle();
+		ofPushMatrix();
+			ofTranslate(820, offset_haut + hauteur_rectangle * 2 + 100, 0);
+			ofDrawBitmapString("Noise", volume_width/2 - 20, 0);
+
+			// CAse du bruit
+			ofFill();
+			ofSetColor(255);
+			if (noise_percent > 0){
+				ofSetColor(R_fill_color, G_fill_color, B_fill_color);
+			}
+			ofDrawRectangle(0, noise_height*4, volume_width, noise_height);
+			ofSetColor(255);
+			if (noise_percent > 0.25){
+				ofSetColor(R_fill_color, G_fill_color, B_fill_color);
+			}
+			ofDrawRectangle(0, noise_height*3, volume_width, noise_height);
+			ofSetColor(255);
+			if (noise_percent > 0.5){
+				ofSetColor(R_fill_color, G_fill_color, B_fill_color);
+			}
+			ofDrawRectangle(0, noise_height*1, volume_width, noise_height*2);
+
+
+
+			//Contour des case du bruit
+			ofNoFill();  
+			ofSetLineWidth(1);	
+			ofSetColor(10, 10, 10);
+			ofDrawRectangle(0, noise_height*4, volume_width, noise_height);
+			ofDrawRectangle(0, noise_height*3, volume_width, noise_height);
+			ofDrawRectangle(0, noise_height*1, volume_width, noise_height*2);
+
+
+			ofSetColor(10);
+			ofDrawBitmapString("100%", volume_width/2 - 14, noise_height*1.5 + noise_height/2 + 4);
+			ofDrawBitmapString("50%", volume_width/2 - 11, noise_height*3 + noise_height/2 + 4);
+			ofDrawBitmapString("25%", volume_width/2 - 11, noise_height*4 + noise_height/2 + 4);
+			ofSetColor(255);
+			if (noise_percent == 0.0){
+				ofSetColor(R_fill_color, G_fill_color, B_fill_color);
+			}
+			ofDrawBitmapString("0%", volume_width/2 - 7, noise_height*5 + noise_height/2 + 4);
+
+			ofSetColor(255);
+			ofDrawBitmapString("V", -20, noise_height*1.5 + noise_height/2 + 4);
+			ofDrawBitmapString("C", -20, noise_height*3 + noise_height/2 + 4);
+			ofDrawBitmapString("X", -20, noise_height*4 + noise_height/2 + 4);
+			ofDrawBitmapString("W", -20, noise_height*5 + noise_height/2 + 4);
 		
+		ofPopMatrix();
+	ofPopStyle();
 
 }
 
@@ -638,10 +689,14 @@ void ofApp::keyPressed(int key){
 	if ( key == '1' ) {
 		mode_carre = false;
 		mode_dent = false;
-		n_harm = 1;
+
 		wave_mode = "Sinusoide";
 	}
 
+	if ( key == '0' ) {
+		n_harm = 1;
+
+	}
 
 	if (key == 'x'){
 
@@ -749,7 +804,7 @@ void ofApp::computeSigCarre(vector <float> & sig){
 	for (size_t i = 0; i < sig.size(); i++){
 		phase += phaseAdder;
 		float sample = 0.0f;
-		for (int k = 0; k < n_harm +1; k++) {
+		for (int k = 0; k < n_harm ; k++) {
 			sample += (sin((2 * k + 1) * phase)) / (2*k	+ 1);
 		}
 		sig[i] = sample * 4 / PI * volume;
