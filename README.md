@@ -8,6 +8,7 @@
 - "\*" et "/" pour rajouter ou enlever une harmonique (i.e., modifier la brillance)
 
 ## Compiler et lancer 
+Ce projet nécessite openFrameworks https://openframeworks.cc/
 ```bash
 git clone git@github.com:ArtDou/synthetiseur_Cplusplus.git
 cd synthetiseur_Cplusplus
