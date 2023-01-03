@@ -1,4 +1,4 @@
-# Coucou, tu veux voir mon synthetiseur ?
+# Projet synthetiseur (écouter, produire, transformer et visualiser le son)
 
 ## Touches à utiliser :
 - s, d, f, g, h, j, k, e, r, y, u , i pour les notes
